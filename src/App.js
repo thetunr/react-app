@@ -1,6 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 
+// npx create-react-app my-app
+// cd my-app
+// npm start
+
 function App() {
   return (
     <div className="App">
