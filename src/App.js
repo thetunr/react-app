@@ -1,27 +1,32 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+// import './assets/sass/style.scss'
 
-// npx create-react-app my-app
-// cd my-app
 // npm start
 
 function App() {
+  const [textInput, setTextInput] = useState('');
+
+  const handleInputChange = (event) => {
+    setTextInput(event.target.value);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="Box-container">
+        <div className="Box-content">
+          <p>Random Text
+          </p>
+          <p>Typed: {textInput}</p>
+          <input
+            type="text"
+            value={textInput}
+            onChange={handleInputChange}
+            placeholder=""
+          />
+        </div>
+      </div>
     </div>
   );
 }
