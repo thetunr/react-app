@@ -21,7 +21,7 @@ const MainPage = () => {
 
   const initRandList = useCallback((language) => {
     const set = new Set();
-    while (set.size < 10) {
+    while (set.size < 25) {
       const word = getRandWord("english");
       set.add(word)
     }

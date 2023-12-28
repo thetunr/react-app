@@ -8,13 +8,6 @@
   }
 }
 
-.App-header {
-  background-color: #ffffff;
-  min-height: 100vh;
-  font-size: calc(10px + 2vmin);
-  color: rgb(0, 0, 0);
-}
-
 .App-link {
   color: #5ebfff;
 }
@@ -50,15 +43,18 @@
   border-radius: 15px;
   max-width: 600px;
   width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+
 }
 
 .Box-content input {
-  margin-top: 5px;
+
   margin-bottom: 15px;
   border-radius: 7px;
   border-width: 0.5px;
   height: 32px;
-  width: 92%;
+  width: 96%;
   padding-left: 10px;
   padding-right: 10px;
   font-family: 'Spectral', serif;
@@ -77,7 +73,7 @@
 .Redo-button {
   max-width: 75px;
 
-  margin-top: 50px;
+  margin-top: 75px;
   margin-left: 10px;
 
   border-radius: 7px;
