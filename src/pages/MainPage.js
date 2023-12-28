@@ -10,32 +10,31 @@ const MainPage = () => {
 
   const [randList, setRandList] = useState([])
 
-  // const [typedList, setTypedList] = useState([])
+  const [numWords, setNumWords] = useState(25)
 
-  const getRandWord = (language) => {
-    const words = wordsData[language] || [];
+  const getRandWord = () => {
+    const words = wordsData["english"] || [];
     const word = words[Math.floor(Math.random() * words.length)];
-    // console.log(word)
     return word
   }
 
-  const initRandList = useCallback((language) => {
+  const initRandList = useCallback(() => {
     const set = new Set();
-    while (set.size < 25) {
-      const word = getRandWord("english");
+    while (set.size < numWords) {
+      const word = getRandWord();
       set.add(word)
     }
     const array = Array.from(set);
     setRandList(array);
-  }, [])
+  }, [numWords])
 
   const initRandListString = () => {
-    const randListString = randList.join(" ")
+    const randListString = randList.join("  ")
     return randListString
   }
 
   const handleTextChange = (event) => {
-    if ((event.target.value).endsWith(" ")) {
+    if ((event.target.value).endsWith("  ")) {
       setTextInput("")
     } else {
       setTextInput(event.target.value)
@@ -43,31 +42,55 @@ const MainPage = () => {
     // console.log(event.target.value) // prints the attempted word
   }
 
-  function handleRedoClick() {
-    initRandList("english");
+  const handleRedoClick = () => {
+    initRandList();
   }
 
   function RedoButton() {
     return (<button className="Redo-button" onClick={handleRedoClick}>redo</button>);
   }
 
+  const handle10Click = () => {
+    setNumWords(10);
+
+  };
+  function Button10() {
+    return (<button className="Num-button" onClick={handle10Click}>10</button>);
+  }
+
+  const handle25Click = () => {
+    setNumWords(25);
+  };
+  function Button25() {
+    return (<button className="Num-button" onClick={handle25Click}>25</button>);
+  }
+
+  const handle50Click = () => {
+    setNumWords(50);
+  };
+  function Button50() {
+    return (<button className="Num-button" onClick={handle50Click}>50</button>);
+  }
+
   useEffect(() => {
-    initRandList("english");
+    initRandList();
   }, [initRandList]);
 
   return (
     <><h1 className='Title'>tupe!</h1>
       <div className="Box-container">
-
         <div className="Box-content">
           <p>{initRandListString()}</p>
+          <Button10 />
+          <Button25 />
+          <Button50 />
           <input
             type="text"
             value={textInput}
             onChange={handleTextChange}
             placeholder=""
-          />
-        </div> <RedoButton />
+          /><RedoButton />
+        </div>
       </div>
 
     </>

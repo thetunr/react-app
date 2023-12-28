@@ -36,6 +36,9 @@
   height: 75vh;
   font-family: 'Spectral', serif;
   font-weight: 200;
+  font-size: 17px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .Box-content {
@@ -43,23 +46,21 @@
   border-radius: 15px;
   max-width: 600px;
   width: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
-
+  /* padding to not let words overflow out of the sides */
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .Box-content input {
-
   margin-bottom: 15px;
   border-radius: 7px;
-  border-width: 0.5px;
+  border-width: 0.1px;
   height: 32px;
-  width: 96%;
-  padding-left: 10px;
-  padding-right: 10px;
+  width: 50%;
   font-family: 'Spectral', serif;
   font-size: 18px;
   font-weight: 300;
+  text-align: center;
 }
 
 .Box-content input:focus {
@@ -71,17 +72,39 @@
 }
 
 .Redo-button {
-  max-width: 75px;
+  max-width: 60px;
 
-  margin-top: 75px;
   margin-left: 10px;
+  margin-right: 10px;
+
+  background-color: rgb(237, 237, 237);
 
   border-radius: 7px;
-  border-width: 0px;
+  border-width: 0.1px;
+  border-style: solid;
+  border-color: rgb(234, 234, 234);
+
+
   height: 30px;
   width: 60%;
   font-family: 'Spectral', serif;
   font-size: 16px;
   font-weight: 400;
-  color: rgb(86, 86, 86);
+  color: rgb(48, 48, 48);
+}
+
+
+.Num-button {
+  padding-bottom: 24px;
+  margin-right: 10px;
+  padding-left: 0px;
+  background-color: rgba(255, 255, 255, 0);
+  border-style: none;
+  width: 16px;
+  height: 18px;
+
+  font-family: 'Spectral', serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgb(48, 48, 48);
 }
