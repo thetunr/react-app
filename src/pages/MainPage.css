@@ -1,0 +1,91 @@
+.App {
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #ffffff;
+  min-height: 100vh;
+  font-size: calc(10px + 2vmin);
+  color: rgb(0, 0, 0);
+}
+
+.App-link {
+  color: #5ebfff;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.Title {
+  font-family: 'Spectral', serif;
+  font-weight: 400;
+  height: 10vh;
+}
+
+
+.Box-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 75vh;
+  font-family: 'Spectral', serif;
+  font-weight: 200;
+}
+
+.Box-content {
+  background-color: rgb(244, 244, 244);
+  border-radius: 15px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.Box-content input {
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 7px;
+  border-width: 0.5px;
+  height: 32px;
+  width: 92%;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-family: 'Spectral', serif;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.Box-content input:focus {
+  outline-color: rgb(95, 172, 255)5, 235, 235;
+}
+
+.Box-content input:not(:focus) {
+  outline-color: rgb(235, 235, 235);
+}
+
+.Redo-button {
+  max-width: 75px;
+
+  margin-top: 50px;
+  margin-left: 10px;
+
+  border-radius: 7px;
+  border-width: 0px;
+  height: 30px;
+  width: 60%;
+  font-family: 'Spectral', serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgb(86, 86, 86);
+}
