@@ -10,6 +10,8 @@ const MainPage = () => {
 
   const [randList, setRandList] = useState([])
 
+  const [typedList, setTypedList] = useState([])
+
   const [numWords, setNumWords] = useState(25)
 
   const getRandWord = () => {
@@ -28,14 +30,24 @@ const MainPage = () => {
     setRandList(array);
   }, [numWords])
 
-  const initRandListString = () => {
-    const randListString = randList.join("  ")
+
+  const getRandListString = () => {
+    const randListString = randList.join(" ")
     return randListString
   }
 
+  const getTypedListString = () => {
+    const typedListString = typedList.join(" ")
+    return typedListString
+  }
+
   const handleTextChange = (event) => {
-    if ((event.target.value).endsWith("  ")) {
+    const currentWord = event.target.value;
+    if (currentWord.endsWith(" ")) {
       setTextInput("")
+      setTypedList([...typedList, currentWord]);
+      console.log(getTypedListString());
+
     } else {
       setTextInput(event.target.value)
     }
@@ -76,11 +88,42 @@ const MainPage = () => {
     initRandList();
   }, [initRandList]);
 
+
+
+
+  const [randColorPrgh, setrandColorPrgh] = useState();
+
+
+  // working in progress
+  function printColorText() {
+    for (let index = 0; index < typedList.length; index++) {
+      const randWord = randList[index];
+      const typedWordSpace = typedList[index];
+      const typedWord = typedWordSpace.substring(0, typedWordSpace.length - 1);
+
+      console.log({ randWord });
+      console.log({ typedWord });
+
+
+      if (randWord === typedWord) {
+
+        console.log("true");
+        // setrandColorPrgh({randColorPrgh}(<p color={"green"}>{randWord}</p>))
+      } else {
+        console.log("false");
+        // setrandColorPrgh({randColorPrgh}(<p color={"red"}>{randWord}</p>))
+      }
+    }
+    // return { randColorPrgh };
+  }
+
+
   return (
     <><h1 className='Title'>tupe!</h1>
       <div className="Box-container">
         <div className="Box-content">
-          <p>{initRandListString()}</p>
+          <>{printColorText()}</>
+          <p>{getRandListString()}</p>
           <Button10 />
           <Button25 />
           <Button50 />
