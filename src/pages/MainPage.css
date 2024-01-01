@@ -35,7 +35,7 @@
   justify-content: center;
   height: 75vh;
   font-family: 'Spectral', serif;
-  font-weight: 200;
+  font-weight: 300;
   font-size: 17px;
   margin-left: 10px;
   margin-right: 10px;
@@ -46,12 +46,14 @@
   border-radius: 15px;
   max-width: 600px;
   width: 100%;
-  /* padding to not let words overflow out of the sides */
-  padding-left: 10px;
-  padding-right: 10px;
+  /* padding to not let words overflow out of the box */
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .Box-content input {
+  margin-top: 10px;
   margin-bottom: 15px;
   border-radius: 7px;
   border-width: 0.1px;
