@@ -12,8 +12,6 @@ const MainPage = () => {
 
   const [numWords, setNumWords] = useState(25)
 
-  const [totalTyped, setTotalTyped] = useState(0)
-
   const [accuracy, setAccuracy] = useState(0)
 
   const [index, setIndex] = useState(0)
@@ -25,7 +23,7 @@ const MainPage = () => {
       const word = words[Math.floor(Math.random() * words.length)];
       set.add(word);
     }
-    const goodList = Array.from(set).map(elem => ({ word: elem, incorrect: -1 }));
+    const goodList = Array.from(set).map(elem => ({ word: elem, typed: "", correct: -1 }));
     setWordList(goodList);
 
     // print initial list
@@ -34,16 +32,14 @@ const MainPage = () => {
   }, [numWords]);
 
   // TODO: not the most optimal solution
-  function countInc(s1, s2) {
+  function countCorrectness(s1, s2) {
     const chars1 = s1.split('');
     const chars2 = (s2 + "                     ").substring(0, s1.length).split('');
     const checker = (acc, cv, i) => {
-      if (cv === chars2[i]) { return acc - 1 } else { return acc }
+      if (cv === chars2[i]) { return acc + 1 } else { return acc }
     }
-    return chars1.reduce(checker, s1.length) + Math.max(s2.length - s1.length, 0);
+    return chars1.reduce(checker, 0);
   }
-
-  
 
   const handleTextChange = (event) => {
     if (event.target.value.endsWith(" ")) {
@@ -53,24 +49,23 @@ const MainPage = () => {
         const typedWord = typed.substring(0, typed.length - 1);
         const currWord = wordList[index].word;
         if (typedWord === currWord) {
-          // console.log("true " + wordList[index].word + " " + typedWord);
-          wordList.splice(index, 1, { word: currWord, incorrect: 0 });
+          wordList.splice(index, 1, { word: currWord, typed: typedWord, correct: currWord.length });
         }
         else {
-          // console.log("false " + wordList[index].word + " " + typedWord);
-          const inc = countInc(currWord, typedWord);
-          wordList.splice(index, 1, { word: currWord, incorrect: inc });
+          const numCorrect = countCorrectness(currWord, typedWord);
+          wordList.splice(index, 1, { word: currWord, typed: typedWord, correct: numCorrect });
         }
-        setTotalTyped(totalTyped + typedWord.length);
         setIndex(index + 1);
       }
-      // this if statement is misplaced MAYBE
-      if (index === numWords - 1) {
-        // TODO: rethink how to compute accuracy, this is def wrong
-        const corrOfTyped = totalTyped - wordList
-          .reduce(((acc, cv) => { return acc + cv.incorrect }), 0.0);
-        setAccuracy(Math.round(100 * corrOfTyped / totalTyped));
-        console.log(accuracy);
+      if (index === numWords - 1) { // determines if the typing is over
+        // TODO: rethink how to compute accuracy, might be right now, using ratio
+        const totalChars = wordList
+          .reduce(((acc, cv) => { return acc + cv.word.length }), 0.0);
+        const correctRatio = wordList
+          .reduce(((acc, cv) => {
+            return acc + (cv.word.length * cv.correct) / (Math.max(cv.typed.length, cv.word.length))
+          }), 0.0);
+        setAccuracy(Math.round(100 * correctRatio / totalChars));
         // TODO: add code to update wpm
       }
     } else {
@@ -114,15 +109,10 @@ const MainPage = () => {
       return <span key={i.word} style={{ color: "orchid", wordSpacing: 2 }}>{i.word} </span>
     }
     else {
-      if (i.incorrect === -1) {
-        return <span key={i.word} style={{ color: "black", wordSpacing: 2 }}>{i.word} </span>
-      }
-      else if (i.incorrect === 0) {
-        return <span key={i.word} style={{ color: "green", wordSpacing: 2 }}>{i.word} </span>
-      }
-      else if (i.incorrect > 0) {
-        return <span key={i.word} style={{ color: "red", wordSpacing: 2 }}>{i.word} </span>
-      }
+      const unattempted = i.correct === -1;
+      const correctAns = i.correct === i.word.length;
+      const wordColor = (unattempted && "black") || (correctAns && "green") || "red";
+      return <span key={i.word} style={{ color: wordColor, wordSpacing: 2 }}>{i.word} </span>
     }
   }
 
@@ -145,8 +135,8 @@ const MainPage = () => {
             placeholder=""
           /><RedoButton />
         </div>
+        <div className="Results-content">wpm: 120 / acc: {accuracy}</div>
       </div>
-
     </>
   )
 }

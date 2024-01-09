@@ -24,20 +24,31 @@
 
 .Title {
   font-family: 'Spectral', serif;
-  font-weight: 400;
+  font-weight: 500;
   height: 10vh;
 }
 
 .Box-container {
+  /* background-color: aliceblue; */
+  /* dimensions: */
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 75vh;
+  height: 80vh;
+  /* font: */
   font-family: 'Spectral', serif;
   font-weight: 300;
   font-size: 17px;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.Results-content {
+  /* background-color: antiquewhite; */
+  max-width: 150px;
+  width: 100%;
+  margin: 5px;
 }
 
 .Box-content {
@@ -93,7 +104,6 @@
   font-weight: 400;
   color: rgb(48, 48, 48);
 }
-
 
 .Num-button {
   padding-bottom: 24px;
