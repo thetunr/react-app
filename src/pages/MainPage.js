@@ -8,7 +8,7 @@ const MainPage = () => {
 
   const [textInput, setTextInput] = useState('')
 
-  const [randList, setRandList] = useState([])
+  const [wordList, setWordList] = useState([])
 
   const [numWords, setNumWords] = useState(25)
 
@@ -16,10 +16,9 @@ const MainPage = () => {
 
   const [accuracy, setAccuracy] = useState(0)
 
-
   const [index, setIndex] = useState(0)
 
-  const initRandList = useCallback(() => {
+  const initWordList = useCallback(() => {
     const words = wordsData["english"] || [];
     const set = new Set();
     while (set.size < numWords) {
@@ -27,7 +26,7 @@ const MainPage = () => {
       set.add(word);
     }
     const goodList = Array.from(set).map(elem => ({ word: elem, incorrect: -1 }));
-    setRandList(goodList);
+    setWordList(goodList);
 
     // print initial list
     // let wordList = goodList.map(elem => elem.word + " ");
@@ -37,12 +36,14 @@ const MainPage = () => {
   // TODO: not the most optimal solution
   function countInc(s1, s2) {
     const chars1 = s1.split('');
-    const chars2 = (s2 + "_________________").substring(0, s1.length).split('');
+    const chars2 = (s2 + "                     ").substring(0, s1.length).split('');
     const checker = (acc, cv, i) => {
       if (cv === chars2[i]) { return acc - 1 } else { return acc }
     }
     return chars1.reduce(checker, s1.length) + Math.max(s2.length - s1.length, 0);
   }
+
+  
 
   const handleTextChange = (event) => {
     if (event.target.value.endsWith(" ")) {
@@ -50,15 +51,15 @@ const MainPage = () => {
       if (index < numWords) {
         const typed = event.target.value;
         const typedWord = typed.substring(0, typed.length - 1);
-        const currWord = randList[index].word;
+        const currWord = wordList[index].word;
         if (typedWord === currWord) {
-          // console.log("true " + randList[index].word + " " + typedWord);
-          randList.splice(index, 1, { word: currWord, incorrect: 0 });
+          // console.log("true " + wordList[index].word + " " + typedWord);
+          wordList.splice(index, 1, { word: currWord, incorrect: 0 });
         }
         else {
-          // console.log("false " + randList[index].word + " " + typedWord);
+          // console.log("false " + wordList[index].word + " " + typedWord);
           const inc = countInc(currWord, typedWord);
-          randList.splice(index, 1, { word: currWord, incorrect: inc });
+          wordList.splice(index, 1, { word: currWord, incorrect: inc });
         }
         setTotalTyped(totalTyped + typedWord.length);
         setIndex(index + 1);
@@ -66,7 +67,7 @@ const MainPage = () => {
       // this if statement is misplaced MAYBE
       if (index === numWords - 1) {
         // TODO: rethink how to compute accuracy, this is def wrong
-        const corrOfTyped = totalTyped - randList
+        const corrOfTyped = totalTyped - wordList
           .reduce(((acc, cv) => { return acc + cv.incorrect }), 0.0);
         setAccuracy(Math.round(100 * corrOfTyped / totalTyped));
         console.log(accuracy);
@@ -78,7 +79,7 @@ const MainPage = () => {
   }
 
   const handleRedoClick = () => {
-    initRandList();
+    initWordList();
     setIndex(0);
     setTextInput("");
   }
@@ -94,17 +95,22 @@ const MainPage = () => {
     }
   };
   function NumButton({ num }) {
-    return (<button className="Num-button" onClick={() => handleClick(num)}> {num}</button >);
+    if (num === numWords) {
+      return (<button style={{ textDecoration: 'underline', fontWeight: 600 }} className="Num-button" onClick={() => handleClick(num)}> {num}</button >);
+    }
+    else {
+      return (<button className="Num-button" onClick={() => handleClick(num)}> {num}</button >);
+    }
   }
 
   // TODO: make run once
   useEffect(() => {
-    initRandList();
-  }, [initRandList]);
+    initWordList();
+  }, [initWordList]);
 
 
   function colorText(i) {
-    if (index < numWords && i.word === randList[index].word) {
+    if (index < numWords && i.word === wordList[index].word) {
       return <span key={i.word} style={{ color: "orchid", wordSpacing: 2 }}>{i.word} </span>
     }
     else {
@@ -126,7 +132,7 @@ const MainPage = () => {
         <div className="Box-content">
           <div>
             {
-              randList.map(i => colorText(i))
+              wordList.map(i => colorText(i))
             }
           </div>
           <NumButton num={10} />
@@ -140,6 +146,7 @@ const MainPage = () => {
           /><RedoButton />
         </div>
       </div>
+
     </>
   )
 }
