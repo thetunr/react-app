@@ -12,9 +12,13 @@ const MainPage = () => {
 
   const [numWords, setNumWords] = useState(25)
 
+  const [wpm, setWPM] = useState(0)
+
   const [accuracy, setAccuracy] = useState(0)
 
   const [index, setIndex] = useState(0)
+
+  const [seconds, setSeconds] = useState(0.0);
 
   const initWordList = useCallback(() => {
     const words = wordsData["english"] || [];
@@ -67,6 +71,9 @@ const MainPage = () => {
           }), 0.0);
         setAccuracy(Math.round(100 * correctRatio / totalChars));
         // TODO: add code to update wpm
+        // https://medium.com/how-to-react/simple-way-to-create-a-stopwatch-in-react-js-bcc0e08e041e
+
+
       }
     } else {
       setTextInput(event.target.value)
@@ -77,9 +84,10 @@ const MainPage = () => {
     initWordList();
     setIndex(0);
     setTextInput("");
+    setSeconds(0);
   }
   function RedoButton() {
-    return (<button className="Redo-button" onClick={handleRedoClick}>redo</button>);
+    return (<button className="Redo-button" onClick={() => handleRedoClick()}>redo</button>);
   }
 
   const handleClick = (num) => {
@@ -98,12 +106,6 @@ const MainPage = () => {
     }
   }
 
-  // TODO: make run once
-  useEffect(() => {
-    initWordList();
-  }, [initWordList]);
-
-
   function colorText(i) {
     if (index < numWords && i.word === wordList[index].word) {
       return <span key={i.word} style={{ color: "orchid", wordSpacing: 2 }}>{i.word} </span>
@@ -116,8 +118,31 @@ const MainPage = () => {
     }
   }
 
+
+
+
+
+  // TODO: make run once
+  useEffect(() => {
+    initWordList();
+  }, [initWordList]);
+
+  // TODO: ruining the timeline of other functions
+  // TODO: doesn't reset time when redo click
+  useEffect(() => {
+    if (seconds > 0.0) {
+      (index !== wordList.length) && setTimeout(() => setSeconds(seconds + .1), 100);
+    }
+    else {
+      (seconds > 0.0 || ((index > 0) || (textInput !== ""))) && setTimeout(() => setSeconds(seconds + .1), 100);
+    }
+  },);
+
+
+
   return (
-    <><h1 className='Title'>tupe!</h1>
+    <>
+      <h1 className='Title'>tupe!</h1>
       <div className="Box-container">
         <div className="Box-content">
           <div>
@@ -133,9 +158,10 @@ const MainPage = () => {
             value={textInput}
             onChange={handleTextChange}
             placeholder=""
-          /><RedoButton />
+          />
+          <RedoButton />
         </div>
-        <div className="Results-content">wpm: 120 / acc: {accuracy}</div>
+        <div className="Results-content">wpm: {wpm} / acc: {accuracy} / time: {seconds}</div>
       </div>
     </>
   )
