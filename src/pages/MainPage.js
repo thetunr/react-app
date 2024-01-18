@@ -8,6 +8,8 @@ const MainPage = () => {
 
   const [textInput, setTextInput] = useState('')
 
+  const [attempting, setAttempting] = useState(false)
+
   const [wordList, setWordList] = useState([])
 
   const [numWords, setNumWords] = useState(25)
@@ -18,7 +20,7 @@ const MainPage = () => {
 
   const [index, setIndex] = useState(0)
 
-  const [seconds, setSeconds] = useState(0.0);
+  const [seconds, setSeconds] = useState(0);
 
   const initWordList = useCallback(() => {
     const words = wordsData["english"] || [];
@@ -46,6 +48,9 @@ const MainPage = () => {
   }
 
   const handleTextChange = (event) => {
+    setAttempting(true)
+
+
     if (event.target.value.endsWith(" ")) {
       setTextInput("");
       if (index < numWords) {
@@ -63,6 +68,7 @@ const MainPage = () => {
       }
       if (index === numWords - 1) { // determines if the typing is over
         // TODO: rethink how to compute accuracy, might be right now, using ratio
+        setAttempting(false);
         const totalChars = wordList
           .reduce(((acc, cv) => { return acc + cv.word.length }), 0.0);
         const correctRatio = wordList
@@ -129,12 +135,19 @@ const MainPage = () => {
 
   // TODO: ruining the timeline of other functions
   // TODO: doesn't reset time when redo click
+  // useEffect(() => {
+  //   if (seconds > 0) {
+  //     (index !== wordList.length) && setTimeout(() => setSeconds(seconds + 1), 1000);
+  //   }
+  //   else {
+  //     (seconds > 0 || ((index > 0) || (textInput !== ""))) && setTimeout(() => setSeconds(seconds + 1), 1000);
+  //   }
+  // },);
+
+  // TODO: creates multiple counters
   useEffect(() => {
-    if (seconds > 0.0) {
-      (index !== wordList.length) && setTimeout(() => setSeconds(seconds + .1), 100);
-    }
-    else {
-      (seconds > 0.0 || ((index > 0) || (textInput !== ""))) && setTimeout(() => setSeconds(seconds + .1), 100);
+    if (attempting) {
+      setTimeout(() => setSeconds(seconds + 1), 1000);
     }
   },);
 
@@ -160,8 +173,10 @@ const MainPage = () => {
             placeholder=""
           />
           <RedoButton />
+
         </div>
-        <div className="Results-content">wpm: {wpm} / acc: {accuracy} / time: {seconds}</div>
+        <div className="Results-content">wpm: {wpm} / acc: {accuracy}</div>
+        <span>{seconds}</span>
       </div>
     </>
   )
