@@ -8,7 +8,7 @@ const MainPage = () => {
 
   const [textInput, setTextInput] = useState('')
 
-  const [attempting, setAttempting] = useState(false)
+  const [isAttempting, setIsAttempting] = useState(false)
 
   const [wordList, setWordList] = useState([])
 
@@ -47,39 +47,44 @@ const MainPage = () => {
     return chars1.reduce(checker, 0);
   }
 
+
+
   const handleTextChange = (event) => {
-    setAttempting(true)
-
-
-    if (event.target.value.endsWith(" ")) {
-      setTextInput("");
-      if (index < numWords) {
-        const typed = event.target.value;
-        const typedWord = typed.substring(0, typed.length - 1);
-        const currWord = wordList[index].word;
-        if (typedWord === currWord) {
-          wordList.splice(index, 1, { word: currWord, typed: typedWord, correct: currWord.length });
+    if (index === 0) {
+      setIsAttempting(true); // if first word, start timer
+    }
+    if (event.target.value.includes(" ")) {
+      setTextInput(""); // reset typed word to nothing
+      if (index < numWords) { // when completed word is not last word
+        const typed = event.target.value; // typed holds typed word
+        const typedWord = typed.substring(0, typed.length - 1); // removes space at the end of typed word
+        const currWord = wordList[index].word; // gets corresponding word
+        if (typedWord === currWord) { // if equal
+          wordList.splice(index, 1, { word: currWord, typed: typedWord, correct: currWord.length }); // correct set to word length
         }
-        else {
+        else { // if not equal
           const numCorrect = countCorrectness(currWord, typedWord);
-          wordList.splice(index, 1, { word: currWord, typed: typedWord, correct: numCorrect });
+          wordList.splice(index, 1, { word: currWord, typed: typedWord, correct: numCorrect }); // correct set to correct number of characters
         }
-        setIndex(index + 1);
+        setIndex(index + 1); // iterate through wordList
       }
       if (index === numWords - 1) { // determines if the typing is over
-        // TODO: rethink how to compute accuracy, might be right now, using ratio
-        setAttempting(false);
+        setIsAttempting(false); // typing is over so we stop the time
+        // TODO: might be good right now, using ratio
         const totalChars = wordList
-          .reduce(((acc, cv) => { return acc + cv.word.length }), 0.0);
-        const correctRatio = wordList
+          .reduce(((acc, cv) => { return acc + cv.word.length }), 0.0); // computes total number of characters in the prompt
+        const correctChars = wordList
           .reduce(((acc, cv) => {
             return acc + (cv.word.length * cv.correct) / (Math.max(cv.typed.length, cv.word.length))
-          }), 0.0);
-        setAccuracy(Math.round(100 * correctRatio / totalChars));
+          }), 0.0); // computes ratio of characters correct of typed or of prompt
+        setAccuracy(Math.round(100 * correctChars / totalChars));
         // TODO: add code to update wpm
         // https://medium.com/how-to-react/simple-way-to-create-a-stopwatch-in-react-js-bcc0e08e041e
-
-
+        console.log(correctChars);
+        console.log(Math.round(100 * correctChars / totalChars));
+        console.log(numWords);
+        console.log(seconds);
+        setWPM(((correctChars / totalChars) * numWords / (seconds / 60)).toFixed(1))
       }
     } else {
       setTextInput(event.target.value)
@@ -90,19 +95,24 @@ const MainPage = () => {
     initWordList();
     setIndex(0);
     setTextInput("");
+    setIsAttempting(false);
     setSeconds(0);
   }
+
   function RedoButton() {
     return (<button className="Redo-button" onClick={() => handleRedoClick()}>redo</button>);
   }
 
   const handleClick = (num) => {
-    setNumWords(num);
-    setIndex(0);
+    setTextInput("");
     if (num !== numWords) {
-      setTextInput("");
+      setNumWords(num);
+      setIsAttempting(false);
+      setSeconds(0);
+      setIndex(0);
     }
   };
+
   function NumButton({ num }) {
     if (num === numWords) {
       return (<button style={{ textDecoration: 'underline', fontWeight: 600 }} className="Num-button" onClick={() => handleClick(num)}> {num}</button >);
@@ -124,38 +134,22 @@ const MainPage = () => {
     }
   }
 
-
-
-
-
   // TODO: make run once
   useEffect(() => {
     initWordList();
   }, [initWordList]);
 
-  // TODO: ruining the timeline of other functions
-  // TODO: doesn't reset time when redo click
-  // useEffect(() => {
-  //   if (seconds > 0) {
-  //     (index !== wordList.length) && setTimeout(() => setSeconds(seconds + 1), 1000);
-  //   }
-  //   else {
-  //     (seconds > 0 || ((index > 0) || (textInput !== ""))) && setTimeout(() => setSeconds(seconds + 1), 1000);
-  //   }
-  // },);
-
-  // TODO: creates multiple counters
   useEffect(() => {
-    if (attempting) {
-      setTimeout(() => setSeconds(seconds + 1), 1000);
+    let intervalId;
+    if (isAttempting) {
+      // incrementing by 0.3 every 300 miliseconds
+      intervalId = setInterval(() => setSeconds(seconds + 0.25), 250);
     }
-  },);
-
-
+    return () => clearInterval(intervalId);
+  }, [isAttempting, seconds]);
 
   return (
     <>
-      <h1 className='Title'>tupe!</h1>
       <div className="Box-container">
         <div className="Box-content">
           <div>
