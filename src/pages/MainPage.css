@@ -1,34 +1,6 @@
-.App {
-  text-align: center;
-}
+/* MY CSS STYLES */
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-link {
-  color: #5ebfff;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.Title {
-  font-family: 'Spectral', serif;
-  font-weight: 500;
-  height: 10vh;
-}
-
-.Box-container {
+.box-container {
   /* background-color: aliceblue; */
   /* dimensions: */
   display: flex;
@@ -44,12 +16,12 @@
   margin-right: 10px;
 }
 
-.Results-content {
+.results-content {
   max-width: 200px;
   margin: 5px;
 }
 
-.Box-content {
+.box-content {
   background-color: rgb(244, 244, 244);
   border-radius: 15px;
   max-width: 600px;
@@ -60,7 +32,7 @@
   padding-right: 15px;
 }
 
-.Box-content input {
+.box-content input {
   margin-top: 10px;
   margin-bottom: 15px;
   border-radius: 7px;
@@ -73,15 +45,15 @@
   text-align: center;
 }
 
-.Box-content input:focus {
+.box-content input:focus {
   outline-color: rgb(95, 172, 255)5, 235, 235;
 }
 
-.Box-content input:not(:focus) {
+.box-content input:not(:focus) {
   outline-color: rgb(235, 235, 235);
 }
 
-.Redo-button {
+.redo-button {
   max-width: 60px;
 
   margin-left: 10px;
@@ -103,7 +75,7 @@
   color: rgb(48, 48, 48);
 }
 
-.Num-button {
+.num-button {
   padding-bottom: 24px;
   margin-right: 10px;
   padding-left: 0px;
@@ -116,4 +88,9 @@
   font-size: 16px;
   font-weight: 400;
   color: rgb(48, 48, 48);
+}
+
+.selected-num {
+  text-decoration: underline;
+  font-weight: 600;
 }
