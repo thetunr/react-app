@@ -17,7 +17,7 @@ const MainPage = () => {
 
   const [index, setIndex] = useState(0);
 
-  const [isRunning, setIsRunning] = useState(false);
+  const [typingStatus, setTypingStatus] = useState("start");
   const [seconds, setSeconds] = useState(0);
 
   // TODO: make run once without repeating code
@@ -54,21 +54,25 @@ const MainPage = () => {
   }
 
   function typingComplete() {
-    setIsRunning(false); // typing is over so we stop the time
-    // TODO: might be good right now, using ratio
-    const totalChars = wordList
-      .reduce(((acc, cv) => { return acc + cv.word.length }), 0.0); // computes total number of characters in the prompt
-    const correctChars = wordList
-      .reduce(((acc, cv) => {
-        return acc + (cv.word.length * cv.correct) / (Math.max(cv.typed.length, cv.word.length))
-      }), 0.0); // computes ratio of characters correct of typed or of prompt
-    setAccuracy(Math.round(100 * correctChars / totalChars));
-    // https://medium.com/how-to-react/simple-way-to-create-a-stopwatch-in-react-js-bcc0e08e041e
-    setWPM(((correctChars / totalChars) * numWords / (seconds / 60)).toFixed(1))
+    if (typingStatus !== "complete") {
+      setTypingStatus("complete"); // typing is over so we stop the time
+      // TODO: might be good right now, using ratio
+      const totalChars = wordList
+        .reduce(((acc, cv) => { return acc + cv.word.length }), 0.0); // computes total number of characters in the prompt
+      const correctChars = wordList
+        .reduce(((acc, cv) => {
+          return acc + (cv.word.length * cv.correct) / (Math.max(cv.typed.length, cv.word.length))
+        }), 0.0); // computes ratio of characters correct of typed or of prompt
+      setAccuracy(Math.round(100 * correctChars / totalChars));
+      // https://medium.com/how-to-react/simple-way-to-create-a-stopwatch-in-react-js-bcc0e08e041e
+      setWPM(((correctChars / totalChars) * numWords / (seconds / 60)).toFixed(1))
+
+      console.log(wordList)
+    }
   }
 
   const handleTextChange = (event) => {
-    index === 0 && setIsRunning(true); // if first character, start timer    
+    index === 0 && setTypingStatus("typing"); // if first character, start timer    
     const typed = event.target.value; // typed holds string in text input (including space)
     const correctWord = wordList[index].word;
 
@@ -76,14 +80,14 @@ const MainPage = () => {
     if (typed[typed.length - 1] === " ") {
       setTextInput(""); // reset typed word to nothing
       const typedWord = typed.substring(0, typed.length - 1); // removes space at the end of typed
-      if (index < numWords - 1) { // when completed word is not last word
+      const numCorrect = typedWord === correctWord ? correctWord.length : countCorrectness(correctWord, typedWord);
+      wordList.splice(index, 1, { word: correctWord, typed: typedWord, correct: numCorrect });
 
-        const numCorrect = typedWord === correctWord ? correctWord.length : countCorrectness(correctWord, typedWord);
-        wordList.splice(index, 1, { word: correctWord, typed: typedWord, correct: numCorrect });
-        setIndex(index + 1); // increment index as we are iterating through wordList
-      }
-      if (index === numWords - 1) { // determines if the typing is over
+      if (index === numWords - 1) {
         typingComplete();
+      }
+      else {
+        setIndex(index + 1); // increment index as we are iterating through wordList unless it is the last word
       }
     } else {
       if (index === numWords - 1 && typed === correctWord) { // if last word and correctly typed
@@ -98,32 +102,42 @@ const MainPage = () => {
     initWordList();
     setIndex(0);
     setTextInput("");
-    setIsRunning(false);
+    setTypingStatus("start");
     setSeconds(0);
   };
-
-
 
   function handleNumButtonClick(num) {
     setTextInput("");
     if (num !== numWords) {
       setNumWords(num);
-      setIsRunning(false);
+      setTypingStatus("start");
       setSeconds(0);
       setIndex(0);
     }
   };
 
   function colorText(i) {
-    if (index < numWords && i.word === wordList[index].word) {
-      return <span key={i.word} style={{ color: "orchid", wordSpacing: 2 }}>{i.word} </span>
+    let wordColor;
+
+    if (i.word === wordList[index].word && typingStatus !== "complete") {
+      if (!i.word.startsWith(textInput)) {
+        wordColor = "#D92673";
+      } else {
+        wordColor = "orchid";
+      }
+    }
+    else if (i.correct === i.typed.length) {
+      wordColor = "green";
     }
     else {
-      const unattempted = i.correct === -1;
-      const correctAns = i.correct === i.word.length;
-      const wordColor = (unattempted && "black") || (correctAns && "green") || "red";
-      return <span key={i.word} style={{ color: wordColor, wordSpacing: 2 }}>{i.word} </span>
+      if (i.correct === -1 && typingStatus !== "complete") {
+        wordColor = "black"
+      }
+      else {
+        wordColor = "red";
+      }
     }
+    return <span key={i.word} style={{ color: wordColor, wordSpacing: 2 }}>{i.word} </span>;
   }
 
 
@@ -145,12 +159,12 @@ const MainPage = () => {
 
   useEffect(() => {
     let intervalId;
-    if (isRunning) {
+    if (typingStatus === "typing") {
       // incrementing by 0.01 every 10 miliseconds
       intervalId = setInterval(() => setSeconds(seconds + 0.01), 10);
     }
     return () => clearInterval(intervalId);
-  }, [isRunning, seconds]);
+  }, [typingStatus, seconds]);
 
   return (
     <div className="box-container">
