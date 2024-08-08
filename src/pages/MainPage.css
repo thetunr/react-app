@@ -1,95 +1,163 @@
 /* MY CSS STYLES */
-
-.box-container {
-  /* background-color: aliceblue; */
-  /* dimensions: */
+/* grid: https: //studiomeal.com/archives/533 */
+/* google fonts: https: //fonts.google.com/ */
+.container-box {
+  /* position: */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 75vh;
+}
+
+.content-box {
+  background-color: #A1B297;
+  border-radius: 1.5vw;
+  /* dimension: */
+  height: 18rem;
+  width: 60rem;
+  max-height: 70vh;
+  max-width: 90vw;
+  margin: 2vh;
+  padding: 3vh;
+  /* grid: */
+  display: grid;
+  grid-template-columns: 16fr 5fr 4fr;
+  grid-template-rows: 3fr 3fr 2fr;
+  /* grid-template-areas:
+    "text text text text text text . wpm"
+    "text text text text text text . acc"
+    "input input input input input redo . color-buttons"; */
+}
+
+/* TODO: need extra actual text container, maybe not */
+.word-list-box {
+  background-color: #EDEDED;
+  border-radius: 1vw;
+  overflow-y: auto;
+  /* dimension: */
+  margin: 1vh;
+  /* TODO: fix padding for all with this setting */
+  padding: 1vh 2vh 1vh 2vh;
   /* font: */
-  font-family: 'Spectral', serif;
+  font-family: 'Baloo 2', serif;
   font-weight: 400;
-  font-size: 1rem;
-  margin: 0rem 1rem 0rem 1rem;
+  font-size: 1.35rem;
+  /* grid: */
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 3;
 }
 
-.results-content {
-  min-width: 8rem;
-  max-width: 12rem;
-  margin: 0.5rem;
+.wpm-box {
+  background-color: #EDEDED;
+  border-radius: 1vw;
+  /* dimension: */
+  margin: 1vh 1vh 1vh 2vh;
+  padding: 1vh 2vh 1vh 2vh;
+  /* font: */
+  font-family: 'Bakbak One', serif;
+  font-size: min(2.25rem, 8vh);
+  font-weight: 400;
+  color: #788173;
+  text-align: end;
+  align-content: end;
+  /* grid: */
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
 }
 
-.box-content {
-  background-color: rgb(244, 244, 244);
-  border-radius: 10px;
-  max-width: 36rem;
-  width: 100%;
-  /* padding to not let words overflow out of the box */
-  padding-top: 15px;
-  padding-left: 15px;
-  padding-right: 15px;
+.acc-box {
+  background-color: #EDEDED;
+  border-radius: 1vw;
+  /* dimension: */
+  margin: 1vh 1vh 1vh 2vh;
+  padding: 1vh 2vh 1vh 2vh;
+  /* font: */
+  font-family: 'Bakbak One', serif;
+  font-size: min(2.25rem, 8vh);
+  font-weight: 400;
+  color: #788173;
+  text-align: end;
+  align-content: end;
+  /* grid: */
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 3;
 }
 
-.box-content input {
-  margin: 1rem 1rem 1rem 1rem;
-  border-radius: 7px;
-  border-width: 0.1px;
-  height: 32px;
-  width: 50%;
-  font-family: 'Spectral', serif;
-  font-size: 18px;
+.content-box input {
+  border-radius: 1vw;
+  border-width: 0.001rem;
+  border-color: transparent;
+  /* dimension:  */
+  margin: 1vh;
+  padding: 0vh 2vh 0vh 2vh;
+  /* font */
+  font-family: 'Baloo 2', serif;
+  font-size: min(1.25rem, 8vh);
   font-weight: 300;
-  text-align: center;
+  /* grid: */
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 3;
+  grid-row-end: 4;
 }
 
-.box-content input:focus {
+.content-box input:focus {
   outline-color: rgb(95, 172, 255)5, 235, 235;
 }
 
-.box-content input:not(:focus) {
-  outline-color: rgb(235, 235, 235);
+.redo-button {
+  background-color: #F8ECCD;
+  border-radius: 1vw;
+  border: none;
+  /* dimension:  */
+  margin: 1vh;
+  /* font: */
+  font-family: 'Bakbak One', serif;
+  font-size: min(2.25rem, 8vh);
+  font-weight: 400;
+  color: #788173;
+  /* grid: */
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 3;
+  grid-row-end: 4;
 }
 
-.redo-button {
-  max-width: 60px;
-
-  margin-left: 10px;
-  margin-right: 10px;
-
-  background-color: rgb(237, 237, 237);
-
-  border-radius: 7px;
-  border-width: 0.1px;
-  border-style: solid;
-  border-color: rgb(234, 234, 234);
-
-
-  height: 30px;
-  width: 60%;
-  font-family: 'Spectral', serif;
-  font-size: 16px;
-  font-weight: 400;
-  color: rgb(48, 48, 48);
+.num-button-container {
+  background-color: rgb(133, 133, 133);
+  /* dimension:  */
+  margin: 1vh 1vh 1vh 2vh;
+  /* grid: */
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  /* display: grid; */
 }
 
 .num-button {
-  padding-bottom: 24px;
-  margin-right: 10px;
-  padding-left: 0px;
-  background-color: rgba(255, 255, 255, 0);
+  background-color: rgb(255, 114, 114);
+  border-radius: 50%;
   border-style: none;
-  width: 16px;
-  height: 18px;
 
+  /* font: */
   font-family: 'Spectral', serif;
-  font-size: 16px;
+  font-size: 4px;
   font-weight: 400;
   color: rgb(48, 48, 48);
+}
+
+.redo-button:hover,
+.num-button:hover {
+  cursor: pointer;
 }
 
 .selected-num {
   text-decoration: underline;
-  font-weight: 600;
 }

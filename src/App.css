@@ -1,6 +1,12 @@
 /* DEFAULT STYLES */
 .App {
-  text-align: center;
+  background-color: #f9f9f9;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* @media (prefers-reduced-motion: no-preference) {
@@ -24,7 +30,29 @@
 } */
 
 .title {
-  font-family: 'Spectral', serif;
-  font-weight: 500;
-  height: 10vh;
+  /* position */
+  position: absolute;
+  top: 0;
+  /* dimension: */
+  width: fit-content;
+  margin-top: 1vh;
+  /* font: */
+  text-align: center;
+  font-family: 'Baloo 2', serif;
+  font-weight: 900;
+  font-size: min(3rem, 7vh);
+  color: #89A07C;
 }
+
+
+/* @media screen and (min-width: 600px) {
+  .title {
+    font-size: 36px;
+  }
+} */
+
+/* @media (max-height: 600px) {
+  .title {
+    display: none;
+  } 
+}*/

@@ -167,16 +167,17 @@ const MainPage = () => {
   }, [typingStatus, seconds]);
 
   return (
-    <div className="box-container">
-      <div className="box-content">
-        <div>
+    <div className="container-box">
+      <div className="content-box">
+        {/* first row */}
+        <div className="word-list-box">
           {
             wordList.map(i => colorText(i))
           }
         </div>
-        <button className={`num-button ${numWords === 10 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(10)}> {10}</button >
-        <button className={`num-button ${numWords === 25 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(25)}> {25}</button >
-        <button className={`num-button ${numWords === 50 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(50)}> {50}</button >
+        <div className="wpm-box">{wpm}</div>
+        <div className="acc-box">{accuracy}</div>
+        {/* second row */}
         <input
           autoFocus
           type="text"
@@ -184,12 +185,16 @@ const MainPage = () => {
           onInput={handleTextChange}
           placeholder=""
         />
-        <button className="redo-button" onClick={() => handleRedoClick()}>redo</button>
-
+        <button className="redo-button" onClick={() => handleRedoClick()}>Redo</button>
+        <div className="num-button-container">
+          <button className={`num-button ${numWords === 10 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(10)}> {10}</button >
+          <button className={`num-button ${numWords === 25 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(25)}> {25}</button >
+          <button className={`num-button ${numWords === 50 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(50)}> {50}</button >
+        </div>
       </div>
-      <div className="results-content">wpm: {wpm} / acc: {accuracy}%</div>
-      <span>{seconds}</span>
-    </div >
+      {/* <div className="results-content">wpm: {wpm} / acc: {accuracy}%</div> */}
+      {/* <span>{seconds}</span> */}
+    </div>
   )
 }
 
