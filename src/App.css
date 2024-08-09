@@ -1,33 +1,3 @@
-/* DEFAULT STYLES */
-.App {
-  background-color: #f9f9f9;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/* @media (min-width: 769px) {
-  .App {
-    background-color: #f9f9f9;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-} */
-
-@media (max-width: 768px) {
-  .App {
-    background-color: #A1B297;
-    display: block;
-  }
-}
-
 /* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

@@ -151,7 +151,7 @@ const WebMain = () => {
   }, [typingStatus, seconds]);
 
   return (
-    <div>
+    <div className='app-screen'>
       <span
         className='title'
         onMouseEnter={() => setTitle('type!')}
