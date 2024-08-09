@@ -9,6 +9,25 @@
   align-items: center;
 }
 
+/* @media (min-width: 769px) {
+  .App {
+    background-color: #f9f9f9;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+} */
+
+@media (max-width: 768px) {
+  .App {
+    background-color: #A1B297;
+    display: block;
+  }
+}
+
 /* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -28,31 +47,3 @@
     transform: rotate(360deg);
   }
 } */
-
-.title {
-  /* position */
-  position: absolute;
-  top: 0;
-  /* dimension: */
-  width: fit-content;
-  margin-top: 1vh;
-  /* font: */
-  text-align: center;
-  font-family: 'Baloo 2', serif;
-  font-weight: 900;
-  font-size: min(3rem, 7vh);
-  color: #89A07C;
-}
-
-
-/* @media screen and (min-width: 600px) {
-  .title {
-    font-size: 36px;
-  }
-} */
-
-/* @media (max-height: 600px) {
-  .title {
-    display: none;
-  } 
-}*/

@@ -1,15 +1,18 @@
-import { useState, useEffect } from 'react';
-import './MainPage.css';
+import { useState, useEffect, useCallback } from 'react';
+import './WebMain.css';
+import './MobileMain.css';
 // https://github.com/dariusk/corpora/blob/master/data/words/common.json
 import wordsData from '../assets/words.json';
 
-const MainPage = () => {
+const WebMain = () => {
+
+  const [title, setTitle] = useState('tupe!');
 
   const [textInput, setTextInput] = useState('');
 
   const [wordList, setWordList] = useState([]);
 
-  const [numWords, setNumWords] = useState(10);
+  const [numWords, setNumWords] = useState(25);
 
   const [wpm, setWPM] = useState(0);
 
@@ -20,8 +23,7 @@ const MainPage = () => {
   const [typingStatus, setTypingStatus] = useState("start");
   const [seconds, setSeconds] = useState(0);
 
-  // TODO: make run once without repeating code
-  useEffect(() => {
+  const initWordList = useCallback(() => {
     const words = wordsData["english"] || [];
     const set = new Set();
     while (set.size < numWords) {
@@ -32,42 +34,28 @@ const MainPage = () => {
     setWordList(goodList);
   }, [numWords]);
 
-  function initWordList() {
-    const words = wordsData["english"] || [];
-    const set = new Set();
-    while (set.size < numWords) {
-      const word = words[Math.floor(Math.random() * words.length)];
-      set.add(word);
-    }
-    const goodList = Array.from(set).map(elem => ({ word: elem, typed: "", correct: -1 })); // record of word, type, and whether typed is correct or not
-    setWordList(goodList);
-  };
+  // run once on init
+  useEffect(() => {
+    initWordList();
+  }, [initWordList]);
 
-  // TODO: not the most optimal solution
   function countCorrectness(s1, s2) {
     const chars1 = s1.split('');
-    const chars2 = (s2 + "                     ").substring(0, s1.length).split('');
-    const checker = (acc, cv, i) => {
-      if (cv === chars2[i]) { return acc + 1 } else { return acc }
-    }
-    return chars1.reduce(checker, 0);
+    const chars2 = s2.padEnd(s1.length).split('');
+    return chars1.reduce((acc, cv, i) => acc + (cv === chars2[i] ? 1 : 0), 0);
   }
 
-  function typingComplete() {
+  const typingComplete = () => {
     if (typingStatus !== "complete") {
-      setTypingStatus("complete"); // typing is over so we stop the time
-      // TODO: might be good right now, using ratio
+      setTypingStatus("complete"); // typing is over so stop counting time
       const totalChars = wordList
         .reduce(((acc, cv) => { return acc + cv.word.length }), 0.0); // computes total number of characters in the prompt
       const correctChars = wordList
         .reduce(((acc, cv) => {
           return acc + (cv.word.length * cv.correct) / (Math.max(cv.typed.length, cv.word.length))
-        }), 0.0); // computes ratio of characters correct of typed or of prompt
+        }), 0.0); // computes ratio of characters correct of the longer (of typed OR of prompt)
       setAccuracy(Math.round(100 * correctChars / totalChars));
-      // https://medium.com/how-to-react/simple-way-to-create-a-stopwatch-in-react-js-bcc0e08e041e
       setWPM(((correctChars / totalChars) * numWords / (seconds / 60)).toFixed(1))
-
-      console.log(wordList)
     }
   }
 
@@ -98,15 +86,15 @@ const MainPage = () => {
     }
   }
 
-  function handleRedoClick() {
+  const handleRedoClick = useCallback(() => {
     initWordList();
     setIndex(0);
     setTextInput("");
     setTypingStatus("start");
     setSeconds(0);
-  };
+  }, [initWordList]);
 
-  function handleNumButtonClick(num) {
+  const handleNumButtonClick = (num) => {
     setTextInput("");
     if (num !== numWords) {
       setNumWords(num);
@@ -115,6 +103,19 @@ const MainPage = () => {
       setIndex(0);
     }
   };
+
+  const handleEsc = useCallback((event) => {
+    if (event.key === 'Escape') {
+      handleRedoClick();
+    }
+  }, [handleRedoClick]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEsc);
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, [handleEsc]);
 
   function colorText(i) {
     let wordColor;
@@ -140,23 +141,6 @@ const MainPage = () => {
     return <span key={i.word} style={{ color: wordColor, wordSpacing: 2 }}>{i.word} </span>;
   }
 
-
-
-  // TODO: fix
-  // useEffect(() => {
-  //   const handleEsc = (event) => {
-  //     if (event.key === 'Escape') {
-  //       handleRedoClick();
-  //     }
-  //   };
-  //   window.addEventListener('keydown', handleEsc);
-
-  //   return () => {
-  //     window.removeEventListener('keydown', handleEsc);
-  //   };
-  // }, [handleRedoClick]);
-
-
   useEffect(() => {
     let intervalId;
     if (typingStatus === "typing") {
@@ -167,41 +151,50 @@ const MainPage = () => {
   }, [typingStatus, seconds]);
 
   return (
-    <div className="container-box">
-      <div className="content-box">
-        {/* first row */}
-        <div className="word-list-box">
-          {
-            wordList.map(i => colorText(i))
-          }
+    <div>
+      <span
+        className='title'
+        onMouseEnter={() => setTitle('type!')}
+        onMouseLeave={() => setTitle('tupe!')}
+      >
+        {title}
+      </span>
+      <div className="container-box">
+        <div className="content-box">
+          {/* first row */}
+          <div className="word-list-box">
+            {
+              wordList.map(i => colorText(i))
+            }
+          </div>
+          <div className="wpm-acc-box wpm-box">
+            <span className='wpm-acc-label'>WPM</span>
+            <span className='wpm-acc-value'>{wpm}</span>
+          </div>
+          <div className="wpm-acc-box acc-box">
+            <span className='wpm-acc-label'>ACC</span>
+            <span className='wpm-acc-value'>{accuracy}</span>
+          </div>
+          {/* second row */}
+          <input
+            autoFocus
+            type="text"
+            value={textInput}
+            onInput={handleTextChange}
+            placeholder=""
+          />
+          <button className="redo-button" onClick={() => handleRedoClick()}>Redo</button>
+          <div className="num-button-container">
+            <button className={`num-button ${numWords === 10 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(10)}> {10}</button >
+            <button className={`num-button ${numWords === 25 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(25)}> {25}</button >
+            <button className={`num-button ${numWords === 50 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(50)}> {50}</button >
+          </div>
         </div>
-        <div className="wpm-acc-box wpm-box">
-          <span className='wpm-acc-label'>WPM</span>
-          <span className='wpm-acc-value'>{wpm}</span>
-        </div>
-        <div className="wpm-acc-box acc-box">
-          <span className='wpm-acc-label'>ACC</span>
-          <span className='wpm-acc-value'>{accuracy}</span>
-        </div>
-        {/* second row */}
-        <input
-          autoFocus
-          type="text"
-          value={textInput}
-          onInput={handleTextChange}
-          placeholder=""
-        />
-        <button className="redo-button" onClick={() => handleRedoClick()}>Redo</button>
-        <div className="num-button-container">
-          <button className={`num-button ${numWords === 10 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(10)}> {10}</button >
-          <button className={`num-button ${numWords === 25 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(25)}> {25}</button >
-          <button className={`num-button ${numWords === 50 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(50)}> {50}</button >
-        </div>
+        {/* <div className="esc-themes-guides">wpm: {wpm} / acc: {accuracy}%</div>
+      <span className="footer">Inspired by typings.gg</span> */}
       </div>
-      {/* <div className="results-content">wpm: {wpm} / acc: {accuracy}%</div> */}
-      {/* <span>{seconds}</span> */}
     </div>
   )
 }
 
-export default MainPage
+export default WebMain
