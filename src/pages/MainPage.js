@@ -175,8 +175,14 @@ const MainPage = () => {
             wordList.map(i => colorText(i))
           }
         </div>
-        <div className="wpm-box">{wpm}</div>
-        <div className="acc-box">{accuracy}</div>
+        <div className="wpm-acc-box wpm-box">
+          <span className='wpm-acc-label'>WPM</span>
+          <span className='wpm-acc-value'>{wpm}</span>
+        </div>
+        <div className="wpm-acc-box acc-box">
+          <span className='wpm-acc-label'>ACC</span>
+          <span className='wpm-acc-value'>{accuracy}</span>
+        </div>
         {/* second row */}
         <input
           autoFocus
