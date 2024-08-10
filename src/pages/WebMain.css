@@ -6,7 +6,7 @@
   height: 100vh;
 }
 
-@media (min-width: 769px) {
+@media (min-aspect-ratio: 1 / 1) {
   .app-screen {
     background-color: #f9f9f9;
     display: flex;
@@ -43,14 +43,16 @@
 
   .content-box {
     background-color: #A1B297;
-    border-radius: 1.5vw;
+    border-radius: 1.5vh;
     /* dimension: */
-    height: 18rem;
+    min-height: 20vh;
+    min-width: 20vw;
+    height: 20rem;
     width: 60rem;
     max-height: 70vh;
-    max-width: 90vw;
+    max-width: 80vw;
     margin: 2vh;
-    padding: 3vh;
+    padding: 2vh;
     /* grid: */
     display: grid;
     grid-template-columns: 16fr 5fr 4fr;
@@ -63,7 +65,7 @@
 
   .word-list-box {
     background-color: #EDEDED;
-    border-radius: 1vw;
+    border-radius: 1vh;
     overflow-y: scroll;
     /* dimension: */
     margin: 1vh;
@@ -84,7 +86,7 @@
 
   .wpm-acc-box {
     background-color: #EDEDED;
-    border-radius: 1vw;
+    border-radius: 1vh;
     /* dimension: */
     margin: 1vh 1vh 1vh 2vh;
     padding: 1vh 2vh 1vh 2vh;
@@ -121,7 +123,7 @@
   }
 
   .content-box input {
-    border-radius: 1vw;
+    border-radius: 1vh;
     border-width: 0.001rem;
     border-color: transparent;
     /* dimension:  */
@@ -142,7 +144,7 @@
 
   .redo-button {
     background-color: #F8ECCD;
-    border-radius: 1vw;
+    border-radius: 1vh;
     border: none;
     /* dimension:  */
     margin: 1vh;
@@ -169,7 +171,7 @@
   }
 
   .num-button {
-    border-radius: 50%;
+    border-radius: 1000px;
     border-style: none;
     opacity: 70%;
     /* dimension: */
