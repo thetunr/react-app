@@ -183,15 +183,28 @@ const WebMain = () => {
             onInput={handleTextChange}
             placeholder=""
           />
-          <button className="redo-button" onClick={() => handleRedoClick()}>Redo</button>
+          <button className="redo-button" onClick={() => handleRedoClick()}>redo</button>
           <div className="num-button-container">
             <button className={`num-button ${numWords === 10 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(10)}> {10}</button >
             <button className={`num-button ${numWords === 25 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(25)}> {25}</button >
             <button className={`num-button ${numWords === 50 ? 'selected-num' : ''}`} onClick={() => handleNumButtonClick(50)}> {50}</button >
           </div>
         </div>
-        {/* <div className="esc-themes-guides">wpm: {wpm} / acc: {accuracy}%</div>
-      <span className="footer">Inspired by typings.gg</span> */}
+        <div className='below-box'>
+          <div className='esc-guide '>
+            <span className='grey-rounded-box-text'>esc</span>
+            <span style={{ color: '#A6A6A6' }}> to redo</span>
+          </div>
+          <div className='themes-button' onClick={() => console.log('themes not implemented yet')}>
+            <span className='grey-rounded-box-text'>themes</span>
+          </div>
+        </div>
+
+
+      </div>
+      <div className='footer'>
+        <span>Inspired by </span>
+        <a href="https://typings.gg" target="_blank" rel="noopener noreferrer">typings.gg</a>
       </div>
     </div>
   )
