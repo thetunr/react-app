@@ -18,6 +18,14 @@
     color: #F9F9F9;
   }
 
+  .footer {
+    /* position */
+    position: absolute;
+    bottom: 0;
+    /* font: */
+    font-family: 'Baloo 2', serif;
+  }
+
   .container-box {
     /* display: */
     display: flex;
@@ -182,7 +190,8 @@
   }
 
   .redo-button:hover,
-  .num-button:hover {
+  .num-button:hover,
+  .themes-button {
     cursor: pointer;
   }
 
@@ -194,4 +203,19 @@
     box-shadow: inset 0rem 0rem 0.1rem #7f8d77;
   }
 
+  .below-box {
+    display: none;
+  }
+
+  .grey-rounded-box-text {
+    display: none;
+  }
+
+  .esc-guide {
+    display: none;
+  }
+
+  .themes-button {
+    display: none;
+  }
 }
