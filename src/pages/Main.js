@@ -24,7 +24,7 @@ const WebMain = () => {
   const [seconds, setSeconds] = useState(0);
 
   const initWordList = useCallback(() => {
-    const words = wordsData["english"] || [];
+    const words = wordsData["american-english"] || [];
     const set = new Set();
     while (set.size < numWords) {
       const word = words[Math.floor(Math.random() * words.length)];
