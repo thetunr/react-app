@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import './WebMain.css';
 import './MobileMain.css';
 // https://github.com/dariusk/corpora/blob/master/data/words/common.json
+// https://www.wordfrequency.info/samples.asp
 import wordsData from '../assets/words.json';
 
 const WebMain = () => {
@@ -52,10 +53,17 @@ const WebMain = () => {
         .reduce(((acc, cv) => { return acc + cv.word.length }), 0.0); // computes total number of characters in the prompt
       const correctChars = wordList
         .reduce(((acc, cv) => {
-          return acc + (cv.word.length * cv.correct) / (Math.max(cv.typed.length, cv.word.length))
+          let maxOfWordOrTyped = Math.max(cv.typed.length, cv.word.length);
+          let correctRatio = cv.correct / maxOfWordOrTyped;
+          return acc + (cv.word.length * correctRatio);
         }), 0.0); // computes ratio of characters correct of the longer (of typed OR of prompt)
-      setAccuracy(Math.round(100 * correctChars / totalChars));
-      setWPM(((correctChars / totalChars) * numWords / (seconds / 60)).toFixed(1))
+      let correctPercentage = correctChars / totalChars;
+      setAccuracy(Math.round(correctPercentage * 100));
+      let normalizer = 1;
+      if (false) {
+        normalizer = totalChars / (numWords * 4.7) // can add normalizer to scale based on average word length of 4.7
+      }
+      setWPM((normalizer * correctPercentage * numWords / (seconds / 60)).toFixed(1))
     }
   }
 
@@ -127,7 +135,7 @@ const WebMain = () => {
         wordColor = "orchid";
       }
     }
-    else if (i.correct === i.typed.length) {
+    else if (i.word === i.typed) {
       wordColor = "green";
     }
     else {
