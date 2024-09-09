@@ -204,7 +204,7 @@ const WebMain = () => {
             <span style={{ color: '#A6A6A6' }}> to redo</span>
           </div>
           <div className='themes-button' onClick={() => console.log('themes not implemented yet')}>
-            <span className='grey-rounded-box-text'>themes1</span>
+            <span className='grey-rounded-box-text'>themes</span>
           </div>
         </div>
 
