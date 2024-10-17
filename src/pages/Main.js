@@ -212,7 +212,7 @@ const WebMain = () => {
       </div>
       <div className='footer'>
         <span>Inspired by </span>
-        <a href="https://typings.gg" target="_blank" rel="noopener noreferrer">typings.gg test</a>
+        <a href="https://typings.gg" target="_blank" rel="noopener noreferrer">typings.gg</a>
       </div>
     </div>
   )
